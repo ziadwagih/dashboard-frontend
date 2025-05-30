@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Crypto Dashboard | Dark-Tech Power</title>
+    <meta name="description" content="Next-gen crypto dashboard with real-time data, portfolio tracking, and dark-tech visuals." />
+
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" />
+
+    <!-- Fonts: Orbitron (headings), Sora (body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Sora:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              orbitron: ['Orbitron', 'sans-serif'],
+              sora: ['Sora', 'sans-serif'],
+            },
+            colors: {
+              background: '#0a0a0a',
+              surface: '#1e1e1e',
+              neonCyan: '#00f0ff',
+              neonPink: '#ff00f0',
+            },
+          },
+        },
+        darkMode: 'class',
+      };
+    </script>
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Lightweight Charts -->
+    <script src="https://unpkg.com/lightweight-charts@4.1.0/dist/lightweight-charts.standalone.production.js"></script>
+
+    <!-- Base Styles -->
+    <style>
+      body {
+        background-color: #0a0a0a;
+        color: white;
+        font-family: 'Sora', sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="root"></div>
+
+    <!-- React Mounting -->
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
