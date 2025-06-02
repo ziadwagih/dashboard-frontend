@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../constants";
 
 export default function AuthCard() {
   const [isSignup, setIsSignup] = useState(false);
@@ -16,8 +17,8 @@ export default function AuthCard() {
     setLoading(true);
 
     const endpoint = isSignup
-      ? "http://localhost:5000/api/auth/signup"
-      : "http://localhost:5000/api/auth/login";
+      ? `${BASE_URL}/api/auth/signup`
+      : `${BASE_URL}/api/auth/login`;
 
     try {
       const res = await fetch(endpoint, {
