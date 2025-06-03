@@ -7,5 +7,6 @@ const router = express.Router();
 // Prefix: /api/auth
 router.post("/signup", signup);
 router.post("/login", login);
+router.post("/register", signup);
 
 export default router;

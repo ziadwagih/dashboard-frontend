@@ -17,7 +17,7 @@ export default function AuthCard() {
     setLoading(true);
 
     const endpoint = isSignup
-      ? `${BASE_URL}/api/auth/signup`
+      ? `${BASE_URL}/api/auth/register`
       : `${BASE_URL}/api/auth/login`;
 
     try {
