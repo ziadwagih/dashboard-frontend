@@ -37,8 +37,8 @@ app.use(helmet());
 const allowedOrigins = [
   process.env.FRONTEND_URL,
   "http://localhost:5173",
-  "https://dashboard-frontend-inky-eight.vercel.app", // old production
-  "https://dashboard-frontend-nwwmef317-ziadwagihs-projects.vercel.app" // preview or new vercel
+  "https://dashboard-frontend-inky-eight.vercel.app",
+  "https://dashboard-frontend-nwwmef317-ziadwagihs-projects.vercel.app"
 ];
 
 app.use(cors({
@@ -54,6 +54,7 @@ app.use(cors({
 }));
 
 app.use(express.json());
+
 app.use(rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
@@ -85,6 +86,10 @@ app.use("/api/arbitrage", authenticateToken, arbitrageRoutes);
 
 app.get("/api/protected-test", authenticateToken, (req, res) => {
   res.json({ message: `Hello ${req.user?.email}, you're authenticated!` });
+});
+
+app.get("/api/test", (req, res) => {
+  res.json({ message: "✅ Test route is working" });
 });
 
 // 💰 CoinGecko Top Coins
