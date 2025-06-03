@@ -9,11 +9,11 @@ import twilio from "twilio";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 
-// Routes & Middleware
+// 🛣 Routes & Middleware
 import favoritesRoutes from "./routes/favoritesRoutes.js";
 import arbitrageRoutes from "./routes/arbitrageRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
-import authTestRoutes from "./routes/authTestRoutes.js";
+import authTestRoutes from "./routes/authTestRoutes.js"; // ✅ THIS MATTERS
 import { authenticateToken } from "./middlewares/authMiddleware.js";
 
 // 🔐 Load .env
@@ -23,17 +23,17 @@ if (!process.env.JWT_SECRET) {
   process.exit(1);
 }
 
-// ⚙️ Express & HTTP Server
+// ⚙️ App & Server
 const app = express();
 const server = http.createServer(app);
 const io = new SocketIOServer(server, {
   cors: { origin: "*", methods: ["GET", "POST"] },
 });
 
-// 🛡️ Security Middleware
+// 🛡️ Middleware
 app.use(helmet());
+app.use(express.json());
 
-// ✅ ✅ CORS — allow multiple trusted frontend origins
 const allowedOrigins = [
   process.env.FRONTEND_URL,
   "http://localhost:5173",
@@ -53,8 +53,6 @@ app.use(cors({
   credentials: true
 }));
 
-app.use(express.json());
-
 app.use(rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
@@ -63,7 +61,6 @@ app.use(rateLimit({
   legacyHeaders: false,
 }));
 
-// 🔌 Attach Socket.IO to requests
 app.use((req, res, next) => {
   req.io = io;
   next();
@@ -78,9 +75,9 @@ mongoose.connect(process.env.MONGO_URI, {
 .then(() => console.log("✅ MongoDB connected"))
 .catch((err) => console.error("❌ MongoDB connection error:", err));
 
-// 🚦 Routes
+// ✅ Routes
 app.use("/api/auth", authRoutes);
-app.use("/api/auth-test", authTestRoutes);
+app.use("/api/auth-test", authTestRoutes); // ✅ THE FIXED ROUTE
 app.use("/api/favorites", authenticateToken, favoritesRoutes);
 app.use("/api/arbitrage", authenticateToken, arbitrageRoutes);
 
@@ -92,7 +89,7 @@ app.get("/api/test", (req, res) => {
   res.json({ message: "✅ Test route is working" });
 });
 
-// 💰 CoinGecko Top Coins
+// 📈 Top coins route
 app.get("/api/top-coins", async (req, res) => {
   try {
     const { data } = await axios.get("https://api.coingecko.com/api/v3/coins/markets", {
@@ -112,7 +109,7 @@ app.get("/api/top-coins", async (req, res) => {
   }
 });
 
-// 📲 Twilio SMS
+// 📲 SMS route
 const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 app.post("/api/send-sms", async (req, res) => {
   const { message } = req.body;
@@ -134,7 +131,7 @@ app.post("/api/send-sms", async (req, res) => {
   }
 });
 
-// 🤖 Telegram Alerts
+// 💬 Telegram alert
 app.post("/api/send-telegram-alert", async (req, res) => {
   const { message, chatId } = req.body;
   const botToken = process.env.TELEGRAM_BOT_TOKEN;
@@ -155,17 +152,17 @@ app.post("/api/send-telegram-alert", async (req, res) => {
   }
 });
 
-// 🧱 Fallback API Route
+// 🧱 Fallback API
 app.use("/api/*", (req, res) => {
   res.status(404).json({ message: "API route not found" });
 });
 
-// 🔎 Basic root health check
+// 🫀 Health check
 app.get("/", (req, res) => {
   res.send("✅ Crypto Dashboard API is running");
 });
 
-// 🚀 Launch
+// 🚀 Start server
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
